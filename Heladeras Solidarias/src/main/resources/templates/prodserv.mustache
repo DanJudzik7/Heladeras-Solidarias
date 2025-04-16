@@ -1,0 +1,173 @@
+<html>
+<head>
+    <title>Mi perfil</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous"><!-- Tipografia -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
+    <link href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet'>
+    <link href='/static/css.css?1=14' rel='stylesheet'>
+</head>
+<body style="background-color: #e6eaf2;">
+
+<nav class="navbar navbar-expand-lg bg-primary" style="background-color: #3055b5!important;" data-bs-theme="dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/front_page">Heladeras Solidarias</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Colaboraciones
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/colaboracion_{{tipoPersona}}" style="color:#f5f5f5">Colaborar</a></li>
+                        <li><a class="dropdown-item" href="/colaboraciones_realizadas" style="color:#f5f5f5">Colaboraciones realizadas</a></li><li><a class="dropdown-item" href="/upload_csv" style="color:#f5f5f5">Carga masiva colaboraciones</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Heladeras
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/suscripcion" style="color:#f5f5f5">Suscribirme a heladeras</a></li>
+                        <li><a class="dropdown-item" href="/heladeras" style="color:#f5f5f5">Mis heladeras</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Productos
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/prodserv" style="color:#f5f5f5">Canjear productos</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="/personaVulnerable">Registrar Persona Vulnerable</a></li>
+                <li class="nav-item"><a class="nav-link" href="/reportar">Reportar Falla</a></li>
+            </ul>
+            <ul class="navbar-nav flex-row flex-wrap ms-md-auto me-3">
+                <li class="nav-item"><a class="nav-link" href="/notificaciones">
+                    {{{notificacionActiva}}}
+                </a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-tools" style="font-size: 1.5rem;"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" disabled>Bienvenido</a></li>
+                        <li><a class="dropdown-item" href="/perfil_{{tipoPersona}}">
+                            <i class="bi bi-person-fill"></i> Mi Perfil
+                        </a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <form method="POST">
+                                <a href="/cerrarSesion" class="dropdown-item" id="cerrar-menu" name="logout">
+                                    <i class="bi bi-door-open-fill"></i> Cerrar Sesión
+                                </a>
+                            </form>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+    <div class="container mt-5 mb-2 border border-round shadow-1" style="background-color: #eff5ff;min-height: 600px;">
+        <div class="p-4">
+            <h2 class="m-2">Productos y servicios ofrecidos</h2>
+            <hr>
+
+            <p>Tienes <strong>{{puntos}}</strong> puntos disponibles.</p>
+            <hr>
+
+                    
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Productos y servicios</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {{#productos}}
+                        <tr>
+                            <td width="50%" class="editable" data-original="Dia de SPA">{{tipoProducto}}</td>
+                            <td width="25%"><span style="width:70px" class="badge text-bg-info">{{monto}}</span></td>
+                            <td><button class="btn btn-primary" onclick="canjearProducto('{{id}}')">Canjear</button></td>
+
+                        </tr>
+                    {{/productos}}
+
+                </tbody>
+            </table>
+           
+        </div>
+    </div>
+
+    <script>
+        function editRow(button) {
+            var row = button.closest("tr");
+            var detailCell = row.querySelector("td.editable");
+            var originalValue = detailCell.getAttribute("data-original");
+            
+            // Convertir el texto en un campo de entrada
+            var input = document.createElement("input");
+            input.type = "text";
+            input.value = originalValue;
+            input.className = "form-control";
+            
+            // Reemplazar el contenido del cell por el input
+            detailCell.innerHTML = "";
+            detailCell.appendChild(input);
+
+            // Agregar botones para guardar o cancelar
+            var saveButton = document.createElement("button");
+            saveButton.className = "btn btn-success btn-sm m-1";
+            saveButton.innerHTML = "Guardar";
+            saveButton.onclick = function() {
+                var newValue = input.value;
+                if (confirm("¿Deseas guardar los cambios?")) {
+                    detailCell.setAttribute("data-original", newValue);
+                    detailCell.innerHTML = newValue;
+                } else {
+                    detailCell.innerHTML = originalValue;
+                }
+            };
+
+            var cancelButton = document.createElement("button");
+            cancelButton.className = "btn btn-danger btn-sm m-1";
+            cancelButton.innerHTML = "Cancelar";
+            cancelButton.onclick = function() {
+                detailCell.innerHTML = originalValue;
+            };
+
+            detailCell.appendChild(saveButton);
+            detailCell.appendChild(cancelButton);
+        }
+        function canjearProducto(id) {
+            console.log("Producto canjeado con ID:", id);
+
+            // Por ejemplo, hacer una solicitud para procesar la compra:
+            fetch(`/canjear-producto/${id}`, {
+                method: 'POST'
+            })
+                    .then(response => {
+                        if (response.ok) {
+                            alert("Producto canjeado exitosamente.");
+                        } else {
+                            alert("Puntos Insuficientes");
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error al canjear el producto:", error);
+                    });
+        }
+
+    </script>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</html>

@@ -1,0 +1,142 @@
+<html>
+    <head>
+        <title>Mi perfil</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous"><!-- Tipografia -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
+        <link href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet'>
+        <link href='/static/css.css?1=14' rel='stylesheet'>
+    </head>
+    <body style="background-color: #e6eaf2;">
+    <nav class="navbar navbar-expand-lg bg-primary" style="background-color: #3055b5!important;" data-bs-theme="dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/front_page">Heladeras Solidarias</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Colaboraciones
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/colaboracion_{{tipoPersona}}" style="color:#f5f5f5">Colaborar</a></li>
+                            <li><a class="dropdown-item" href="/colaboraciones_realizadas" style="color:#f5f5f5">Colaboraciones realizadas</a></li><li><a class="dropdown-item" href="/upload_csv" style="color:#f5f5f5">Carga masiva colaboraciones</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Heladeras
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/suscripcion" style="color:#f5f5f5">Suscribirme a heladeras</a></li>
+                            <li><a class="dropdown-item" href="/heladeras" style="color:#f5f5f5">Mis heladeras</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Productos
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/prodserv" style="color:#f5f5f5">Canjear productos</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="/personaVulnerable">Registrar Persona Vulnerable</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/reportar">Reportar Falla</a></li>
+                </ul>
+                <ul class="navbar-nav flex-row flex-wrap ms-md-auto me-3">
+                    <li class="nav-item"><a class="nav-link" href="/notificaciones">
+                        {{{notificacionActiva}}}
+                    </a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-tools" style="font-size: 1.5rem;"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" disabled>Bienvenido</a></li>
+                            <li><a class="dropdown-item" href="/perfil_{{tipoPersona}}">
+                                <i class="bi bi-person-fill"></i> Mi Perfil
+                            </a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form method="POST">
+                                    <a href="/cerrarSesion" class="dropdown-item" id="cerrar-menu" name="logout">
+                                        <i class="bi bi-door-open-fill"></i> Cerrar Sesión
+                                    </a>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container mt-5 mb-2 border border-round shadow-1" style="background-color: #eff5ff;min-height: 600px;">
+            {{#successMessage}}
+                <div class="alert alert-success my-2" >{{successMessage}}</div>
+            {{/successMessage}}
+            <form method='POST' class="row p-4">
+                <div class="row">
+                    <h2 class="col-md-4">Mi perfil</h2>
+                    <div class="col-md-4"></div>
+                    <h5 class="col-md-4" id="btn-edit">Editar <i class="bi bi-pencil-fill" onclick="editar()" style="cursor: pointer;"></i></h5>
+                    <a href="/perfil_persona_juridica" type="submit" class="col-md-4 btn btn-danger btn-sm" id="btn-cancel" style="display: none;width: 120px">Cancelar edicion</a>
+                </div>
+                <hr>
+                <div class="col-md-7">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label for="razon-social">Razon Social</label>
+                            <input type="text" name="razon-social" class="form-control" id="razon-social" value="{{nombre}}" disabled>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="tipo">Tipo</label>
+                            <input type="text" name="tipo" class="form-control" id="tipo"  value="{{tipo}}" disabled>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="direccion">Direccion</label>
+                            <input type="text" name="direccion" class="form-control" id="direccion" value="{{direccion}}" disabled>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="medios-contacto">Medio de contacto</label>
+                            <input type="text" name="medios-contacto" class="form-control" id="medios-contacto" value="{{tipo-mdc}} - {{detalle-mdc}}" disabled>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="form-row my-3">
+                        <center><a href="/reportar" id="btn-login-submit" class="btn btn-primary col-md-8">Reportar falla tecnica</a></center>
+                    </div>
+                    <div class="form-row my-3">
+                        <center><a href="/suscripcion" id="btn-login-submit" class="btn btn-primary col-md-8">Suscribirme heladera</a></center>
+                    </div>
+                    <div class="form-row my-3">
+                        <center><a href="/heladeras" id="btn-login-submit" class="btn btn-primary col-md-8">Mis heladeras</a></center>
+                    </div>
+                    <div class="form-row my-3">
+                        <center><a href="/colaboraciones_realizadas" id="btn-login-submit" class="btn btn-primary col-md-8">Colaboraciones Realizadas</a></center>
+                    </div>
+                </div>
+                <hr class="my-3">
+                <div class="form-row">
+                    <button type="submit" id="btn-cerrar-sesion" name="btn-accion" value="logout" class="btn btn-warning col-md-4 mx-auto">Cerrar sesion</button>
+                    <button type="submit" id="btn-guardar" name="btn-accion" value="save" class="btn btn-success col-md-4 mx-auto" style="display: none">Guardar datos</button>
+                </div>
+            </form>
+        </div><script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    </body>
+
+</html>
+<script>
+    function editar() {
+        document.getElementById("razon-social").disabled = false;
+        //document.getElementById("tipo").disabled = false;
+        document.getElementById("direccion").disabled = false;
+        //document.getElementById("medios-contacto").disabled = false;
+        document.getElementById("btn-guardar").style.display="";
+        document.getElementById("btn-edit").style.display="none";
+        document.getElementById("btn-cancel").style.display="";
+    }
+</script>

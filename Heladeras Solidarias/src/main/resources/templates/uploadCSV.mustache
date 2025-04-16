@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title>Front Page - Subir CSV</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous"><!-- Tipografia -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
+    <link href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet'>
+    <link href='/static/css.css?1=13' rel='stylesheet'>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg bg-primary" style="background-color: #3055b5!important;" data-bs-theme="dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/front_page">Heladeras Solidarias</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Colaboraciones
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/colaboracion_{{tipoPersona}}" style="color:#f5f5f5">Colaborar</a></li>
+                        <li><a class="dropdown-item" href="/colaboraciones_realizadas" style="color:#f5f5f5">Colaboraciones realizadas</a></li><li><a class="dropdown-item" href="/upload_csv" style="color:#f5f5f5">Carga masiva colaboraciones</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Heladeras
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/suscripcion" style="color:#f5f5f5">Suscribirme a heladeras</a></li>
+                        <li><a class="dropdown-item" href="/heladeras" style="color:#f5f5f5">Mis heladeras</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Productos
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/prodserv" style="color:#f5f5f5">Canjear productos</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="/personaVulnerable">Registrar Persona Vulnerable</a></li>
+                <li class="nav-item"><a class="nav-link" href="/reportar">Reportar Falla</a></li>
+            </ul>
+            <ul class="navbar-nav flex-row flex-wrap ms-md-auto me-3">
+                <li class="nav-item"><a class="nav-link" href="/notificaciones">
+                    {{{notificacionActiva}}}
+                </a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-tools" style="font-size: 1.5rem;"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" disabled>Bienvenido</a></li>
+                        <li><a class="dropdown-item" href="/perfil_{{tipoPersona}}">
+                            <i class="bi bi-person-fill"></i> Mi Perfil
+                        </a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <form method="POST">
+                                <a href="/cerrarSesion" class="dropdown-item" id="cerrar-menu" name="logout">
+                                    <i class="bi bi-door-open-fill"></i> Cerrar Sesión
+                                </a>
+                            </form>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+
+<!-- Upload CSV Section -->
+<div class="container mt-5 mb-2 border border-round shadow-1" style="background-color: #eff5ff;min-height: 600px;">
+    {{#successMessage}}
+        <div class="alert alert-success my-2" >{{successMessage}}</div>
+    {{/successMessage}}
+    {{#errorMessage}}
+        <div class="alert alert-warning my-2" >{{errorMessage}}</div>
+    {{/errorMessage}}
+    <div class="row p-4">
+        <h2>Suscripción a heladeras</h2>
+        <hr>
+        <h5>Sube tus Colaboraciones</h5>
+        <p>Asegúrate de que el archivo sea un CSV válido para que podamos procesarlo correctamente.</p>
+        <p><strong>Columnas CSV:</strong></p>
+        <p>TIPO DE DOCUMENTO, NOMBRE COMPLETO, EMAIL, FECHA NACIMIENTO(YYYY-MM-DD), TIPO DE DONACION, MONTO</p>
+        <p><strong>Tipos de colaboracion disponibles:</strong></p>
+        <ul style="padding-left: 2.5em;">
+            <li>DINERO</li>
+            <li>DONACION_VIANDAS</li>
+            <li>REDISTRIBUCION_VIANDAS</li>
+            <li>ENTREGA_TARJETAS</li>
+        </ul>
+        <hr>
+        <form id="csvUploadForm" action="/upload_csv" method="POST" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label for="csvFile" class="form-label">Selecciona tu archivo CSV:</label>
+                <input type="file" class="form-control" id="csvFile" name="file" accept=".csv" required>
+            </div>
+            <hr>
+            <button type="submit" class="btn btn-primary">Subir CSV</button>
+            <p id="message" class="mt-2 text-danger" style="display: none;">Por favor, selecciona un archivo CSV válido.</p>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Validación básica para asegurar que el archivo subido sea un .csv
+    const csvFileInput = document.getElementById('csvFile');
+    const form = document.getElementById('csvUploadForm');
+    const message = document.getElementById('message');
+
+    form.addEventListener('submit', function(event) {
+        const fileName = csvFileInput.value.toLowerCase();
+        if (!fileName.endsWith('.csv')) {
+            event.preventDefault(); // Detener el envío del formulario
+            message.style.display = 'block'; // Mostrar el mensaje de error
+        } else {
+            message.style.display = 'none';
+        }
+    });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
